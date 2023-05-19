@@ -13,7 +13,7 @@ namespace TImeManagement.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Auth()
         {
             return View();
         }
