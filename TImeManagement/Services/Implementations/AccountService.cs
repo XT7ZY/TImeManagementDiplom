@@ -171,14 +171,26 @@ namespace TImeManagement.Services.Implementations
             };
 
 
-            if (claim == "Admin")                                 ////////////Лучший костыль в мире
+            if (claim == "Admin")                                 ////////////Лучший костыль в мире (сделан для того чтобы все управляющие роли получали роли уровня ниже
             {
                 claims.Add(new Claim("Employer", "3"));
             }
             if (claim == "Root")
             {
                 claims.Add(new Claim("Employer", "3"));
-                claims.Add(new Claim("Admin", "1"));
+                claims.Add(new Claim("Admin", "2"));
+            }
+            if (claim == "EployerDispetcher")
+            {
+                claims.Add(new Claim("Employer", "3"));
+            }
+            if (claim == "EployerCook")
+            {
+                claims.Add(new Claim("Employer", "3"));
+            }
+            if (claim == "EployerWaiter")
+            {
+                claims.Add(new Claim("Employer", "3"));
             }
 
 

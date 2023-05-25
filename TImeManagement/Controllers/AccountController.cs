@@ -19,12 +19,15 @@ namespace TImeManagement.Controllers
             _accountService = accountService;
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public IActionResult Register()
         {
             return PartialView("_Register");
         }
 
+
+        [Authorize(Policy = "AdminOnly")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -43,6 +46,8 @@ namespace TImeManagement.Controllers
             }
             return View(model);
         }
+
+
 
         [HttpGet]
         public IActionResult Login() 
@@ -101,7 +106,6 @@ namespace TImeManagement.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            TempData["Success"] = "Вы успешно вышли из аккаунта";
             return RedirectToAction("Login", "Account");
         }
     }

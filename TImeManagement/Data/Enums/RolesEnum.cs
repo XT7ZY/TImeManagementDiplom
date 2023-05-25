@@ -9,10 +9,19 @@ namespace TImeManagement.Data.Enums
         [Display(Name ="root")]
         Root = 1,
 
-        [Display(Name ="employer")]
-        Employer = 2,
-
         [Display(Name ="admin")]
-        Admin = 3
+        Admin = 2,
+
+        [Display(Name ="employer")]
+        Employer = 3,
+
+        [Display(Name = "employerDispetcher")]
+        EployerDispetcher = 4,
+
+        [Display(Name = "employerCook")]
+        EployerCook = 5,
+
+        [Display(Name = "employerWaiter")]
+        EployerWaiter = 6,
     }
 }
