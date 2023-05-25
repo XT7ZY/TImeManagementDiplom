@@ -22,7 +22,7 @@ namespace TImeManagement.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return PartialView("_Register");
         }
 
         [ValidateAntiForgeryToken]
@@ -72,6 +72,27 @@ namespace TImeManagement.Controllers
                 ModelState.AddModelError("", response.Description);
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public  IActionResult ChangePassword()
+        {
+            return PartialView("_ChangePassword");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                    var response = await _accountService.ChangePassword(model);
+                    if (response.StatusCode == TImeManagement.Data.Enums.StatusCode.OK)
+                    {
+                        return Json(new { description = response.Description });
+                    }
+            }
+            return RedirectToAction("Start", "Home");
         }
 
         public async Task<IActionResult> Logout()

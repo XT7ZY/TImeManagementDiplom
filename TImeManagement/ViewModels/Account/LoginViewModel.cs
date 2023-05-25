@@ -10,6 +10,7 @@ namespace TImeManagement.ViewModels.Account
         public string Login { get; set; }
 
         [Required(ErrorMessage = "Укажите пароль")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

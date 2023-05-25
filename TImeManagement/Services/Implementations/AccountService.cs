@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TImeManagement.Services.Implementations
 {
@@ -74,7 +75,7 @@ namespace TImeManagement.Services.Implementations
         public async Task<BaseResponse<ClaimsIdentity>> Login(LoginViewModel model)
         {
             try
-            {
+            {   
                 var employer = await _employerRepository.GetAll().FirstOrDefaultAsync(x => x.UserLogin == model.Login);
                 if (employer == null)
                 {
@@ -110,6 +111,51 @@ namespace TImeManagement.Services.Implementations
             }
         }
 
+        public async Task<BaseResponse<bool>> ChangePassword(ChangePasswordViewModel model)
+        {
+            try
+            {
+                var user = await _employerRepository.GetAll().FirstOrDefaultAsync(x => x.UserLogin == model.Login);
+
+                if(user.HashPassword != HashPasswordHelper.HashPassword(model.OldPassword))
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        StatusCode = StatusCode.PasswordUncorect,
+                        Description = "Пароли не совпадают"
+                    };
+                }
+                if (user.HashPassword == HashPasswordHelper.HashPassword(model.NewPassword))
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        StatusCode = StatusCode.PasswordUncorect,
+                        Description = "Новый пароль совподает со старым"
+                    };
+                }
+
+                user.HashPassword = HashPasswordHelper.HashPassword(model.NewPassword);
+                await _employerRepository.Update(user);
+
+
+                return new BaseResponse<bool>()
+                {
+                    Data = true,
+                    StatusCode = StatusCode.OK,
+                    Description = "Пароль обновлен"
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[ChangePassword]: {ex.Message}");
+                return new BaseResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
         private ClaimsIdentity Authenticate(Employer employer)
         {
             var rolesDict = Enum.GetValues(typeof(RolesEnum)).Cast<RolesEnum>()
@@ -119,7 +165,7 @@ namespace TImeManagement.Services.Implementations
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, employer.Name),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, employer.UserLogin),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, employer.RoleId.ToString()),///// нужно исправить
                 new Claim(claim , "1")
             };
