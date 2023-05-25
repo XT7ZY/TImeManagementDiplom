@@ -36,10 +36,10 @@ namespace TImeManagement.Controllers
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));
-
+                    TempData["Success"] = "Регистрация успешна";
                     return RedirectToAction("Start", "Home");
                 }
-                ModelState.AddModelError("", response.Description);
+                TempData["error"] = response.Description.ToString();
             }
             return View(model);
         }
@@ -66,10 +66,10 @@ namespace TImeManagement.Controllers
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));
-
+                    TempData["Success"] = "Вы успешно авторизировались";
                     return RedirectToAction("Start", "Home");
                 }
-                ModelState.AddModelError("", response.Description);
+                TempData["error"] = response.Description.ToString();
             }
             return View(model);
         }
@@ -89,8 +89,11 @@ namespace TImeManagement.Controllers
                     var response = await _accountService.ChangePassword(model);
                     if (response.StatusCode == TImeManagement.Data.Enums.StatusCode.OK)
                     {
-                        return Json(new { description = response.Description });
+                        TempData["Success"] = "Вы успешно изменили пароль";
+                        return RedirectToAction("Start", "Home");
                     }
+
+                    TempData["error"] = response.Description.ToString();
             }
             return RedirectToAction("Start", "Home");
         }
@@ -98,6 +101,7 @@ namespace TImeManagement.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["Success"] = "Вы успешно вышли из аккаунта";
             return RedirectToAction("Login", "Account");
         }
     }

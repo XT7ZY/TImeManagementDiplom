@@ -122,7 +122,7 @@ namespace TImeManagement.Services.Implementations
                     return new BaseResponse<bool>()
                     {
                         StatusCode = StatusCode.PasswordUncorect,
-                        Description = "Пароли не совпадают"
+                        Description = "Старый пароль введен не верно"
                     };
                 }
                 if (user.HashPassword == HashPasswordHelper.HashPassword(model.NewPassword))
