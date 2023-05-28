@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+    <link rel="stylesheet" href="~/css/StyleSheet.css" />
+@*    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />*@
 
 </head>
 <body>
@@ -18,7 +21,7 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
-                <a href="#" class="d-flex mb-md-0 align-items-center mb-2 mr text-dark text-decoration-none font-size link-dark">Мой график</a>
+                <a asp-controller="Home" asp-action="Start" class="d-flex mb-md-0 align-items-center mb-2 mr text-dark text-decoration-none font-size link-dark">Мой график</a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a asp-controller="Employers" asp-action="Index" class="nav-link px-2 link-dark">список сотрудников</a></li>
@@ -77,6 +80,9 @@
     <script src="~/js/ChangePassword.js"></script>
     <script src="~/js/ChangePasswordConfirm.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <script src="~/js/Calendar.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

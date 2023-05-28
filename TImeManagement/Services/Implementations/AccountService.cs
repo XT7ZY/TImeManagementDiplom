@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿  using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TImeManagement.Data.Enums;
 using TImeManagement.Data.Helpers;
@@ -180,15 +180,15 @@ namespace TImeManagement.Services.Implementations
                 claims.Add(new Claim("Employer", "3"));
                 claims.Add(new Claim("Admin", "2"));
             }
-            if (claim == "EployerDispetcher")
+            if (claim == "EmployerDispetcher")
             {
                 claims.Add(new Claim("Employer", "3"));
             }
-            if (claim == "EployerCook")
+            if (claim == "EmployerCook")
             {
                 claims.Add(new Claim("Employer", "3"));
             }
-            if (claim == "EployerWaiter")
+            if (claim == "EmployerWaiter")
             {
                 claims.Add(new Claim("Employer", "3"));
             }

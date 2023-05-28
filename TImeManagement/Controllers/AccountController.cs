@@ -39,7 +39,7 @@ namespace TImeManagement.Controllers
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));
-                    TempData["Success"] = "Регистрация успешна";
+                    TempData["Success"] = "Регистрация нового пользователя успешна. Вход...";
                     return RedirectToAction("Start", "Home");
                 }
                 TempData["error"] = response.Description.ToString();

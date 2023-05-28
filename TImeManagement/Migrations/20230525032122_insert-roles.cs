@@ -6,18 +6,19 @@ using TImeManagement.Models;
 namespace TImeManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class InsertRoles : Migration
+    public partial class insertroles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.InsertData(
+                migrationBuilder.InsertData(
                 table: "roles",
                 columns: new[] { nameof(Role.Name) },
                 values: new object[,]
                 {
-                    {"admin"},
-                    {"employer"},
+                    {"employerDispetcher"},
+                    {"employerCook"},
+                    {"employerWaiter"},
                 });
         }
 
