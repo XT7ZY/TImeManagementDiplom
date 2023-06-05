@@ -1,4 +1,6 @@
-﻿namespace TImeManagement.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TImeManagement.Models
 {
     public class Bid
     {

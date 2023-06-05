@@ -12,11 +12,13 @@ namespace TImeManagement
         public static void InitializeRepositories(this IServiceCollection services)
         {
             services.AddScoped<IBaseRepository<Employer>, EmployerRepository>();
+            services.AddScoped<IRolesRepository<Role>, RolesRepository>();
         }
 
         public static void InitializeServices(this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
+
         }
 
 

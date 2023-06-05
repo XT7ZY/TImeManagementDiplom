@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TImeManagement.Services.Implementations;
 using TImeManagement.Services.Interfaces;
 using TImeManagement.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TImeManagement.Controllers
 {
@@ -23,6 +22,9 @@ namespace TImeManagement.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            var roles = _accountService.GetRoles();
+            ViewBag.RolesList = new SelectList(roles, "Id", "Name");
+
             return PartialView("_Register");
         }
 

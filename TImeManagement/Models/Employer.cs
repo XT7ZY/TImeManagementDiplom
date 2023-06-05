@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TImeManagement.Models
 {
@@ -14,7 +15,6 @@ namespace TImeManagement.Models
         public Role Role { get; set; }
         public string UserLogin { get; set; }
         public string HashPassword { get; set; }
-
         public ICollection<Day> Days { get; set; }
 
     }

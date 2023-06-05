@@ -12,17 +12,20 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TImeManagement.Data.Repositories;
 
 namespace TImeManagement.Services.Implementations
 {
     public class AccountService : IAccountService
     {
+        private readonly IRolesRepository<Role> _rolesRepository;
         private readonly IBaseRepository<Employer> _employerRepository;
         private readonly ILogger <AccountService> _logger;
 
 
-        public AccountService(IBaseRepository<Employer> employerRepository, ILogger<AccountService> logger)
+        public AccountService(IBaseRepository<Employer> employerRepository, ILogger<AccountService> logger, IRolesRepository<Role> rolesRepository)
         {
+            _rolesRepository = rolesRepository;
             _logger = logger;
             _employerRepository = employerRepository;
         }
@@ -196,5 +199,12 @@ namespace TImeManagement.Services.Implementations
 
             return new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
         }
+
+        public IEnumerable<Role> GetRoles()
+        {
+            var roles = _rolesRepository.GetAll();
+            return roles;
+        }
+
     }
 }

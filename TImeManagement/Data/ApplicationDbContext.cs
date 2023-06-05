@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TImeManagement.Models;
 using TImeManagement.Data.Helpers;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace TImeManagement.Data
 {
@@ -17,7 +18,7 @@ namespace TImeManagement.Data
         public DbSet<Day> days { get; set; }
         public DbSet<Employer> employers { get; set; }
         public DbSet<Role> roles { get; set; }
-
+        public DbSet<Event> events { get; set; }
     }
 
     
