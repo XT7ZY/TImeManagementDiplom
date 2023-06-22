@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TImeManagement.Data;
 
@@ -11,9 +12,11 @@ using TImeManagement.Data;
 namespace TImeManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230621002455_EditBids")]
+    partial class EditBids
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,20 +48,14 @@ namespace TImeManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BidTypeId")
+                    b.Property<int>("BidTypeId")
                         .HasColumnType("int");
-
-                    b.Property<int?>("EmployerSenderId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsClosed")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RecieverId")
+                    b.Property<int>("RecieverId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SendTime")
@@ -73,8 +70,6 @@ namespace TImeManagement.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BidTypeId");
-
-                    b.HasIndex("EmployerSenderId");
 
                     b.ToTable("bids");
                 });
@@ -120,9 +115,6 @@ namespace TImeManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BidId")
-                        .HasColumnType("int");
-
                     b.Property<string>("HashPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -151,8 +143,6 @@ namespace TImeManagement.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BidId");
 
                     b.HasIndex("RoleId");
 
@@ -216,23 +206,15 @@ namespace TImeManagement.Migrations
                 {
                     b.HasOne("TImeManagement.Models.BidType", "BidType")
                         .WithMany()
-                        .HasForeignKey("BidTypeId");
-
-                    b.HasOne("TImeManagement.Models.Employer", "EmployerSender")
-                        .WithMany()
-                        .HasForeignKey("EmployerSenderId");
+                        .HasForeignKey("BidTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BidType");
-
-                    b.Navigation("EmployerSender");
                 });
 
             modelBuilder.Entity("TImeManagement.Models.Employer", b =>
                 {
-                    b.HasOne("TImeManagement.Models.Bid", null)
-                        .WithMany("Employers")
-                        .HasForeignKey("BidId");
-
                     b.HasOne("TImeManagement.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -251,11 +233,6 @@ namespace TImeManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("Employer");
-                });
-
-            modelBuilder.Entity("TImeManagement.Models.Bid", b =>
-                {
-                    b.Navigation("Employers");
                 });
 #pragma warning restore 612, 618
         }

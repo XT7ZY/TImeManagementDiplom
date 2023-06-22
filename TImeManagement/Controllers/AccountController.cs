@@ -6,6 +6,7 @@ using TImeManagement.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Azure;
 
 namespace TImeManagement.Controllers
 {
@@ -18,7 +19,7 @@ namespace TImeManagement.Controllers
             _accountService = accountService;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+         
         [HttpGet]
         public IActionResult Register()
         {
@@ -46,7 +47,8 @@ namespace TImeManagement.Controllers
                 }
                 TempData["error"] = response.Description.ToString();
             }
-            return View(model);
+            TempData["error"] = "Введенные данные не прошли валидацию";
+            return RedirectToAction("Start", "Home");
         }
 
 
@@ -78,6 +80,7 @@ namespace TImeManagement.Controllers
                 }
                 TempData["error"] = response.Description.ToString();
             }
+            TempData["error"] = "Введенные данные не прошли валидацию";
             return View(model);
         }
 
@@ -99,9 +102,9 @@ namespace TImeManagement.Controllers
                         TempData["Success"] = "Вы успешно изменили пароль";
                         return RedirectToAction("Start", "Home");
                     }
-
                     TempData["error"] = response.Description.ToString();
             }
+            TempData["error"] = "Пароль не изменен";
             return RedirectToAction("Start", "Home");
         }
 

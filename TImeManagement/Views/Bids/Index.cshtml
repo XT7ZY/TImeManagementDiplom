@@ -1,0 +1,75 @@
+﻿@model IEnumerable<TImeManagement.Models.Bid>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>
+    @if (User.IsInRole("3") || User.IsInRole("4") || User.IsInRole("5") || User.IsInRole("6"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Создать заявку</a>
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Тип
+            </th>
+            <th>
+                Сообщение
+            </th>
+            <th>
+                Статус
+            </th>
+            <th>
+                Отправитель
+            </th>
+            <th>
+                Время отправки
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BidType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                @if (item.IsClosed == false)
+                {
+                    <td class="text-warning">
+                        В обработке
+                    </td>
+                }
+                @if (item.IsClosed == true)
+                {
+                    <td class="text-success">
+                        Обработана
+                    </td>
+                }
+                <td>
+                    @item.EmployerSender.LastName  @item.EmployerSender.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SendTime)
+                </td>
+                <td>
+                    @if (User.IsInRole("1") || User.IsInRole("2"))
+                    {
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Детали</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        @if (item.IsClosed == false)
+                        {
+                            <a class="btn btn-success" asp-action="Close" asp-route-id="@item.Id">Закрыть заявку</a>
+                        }
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

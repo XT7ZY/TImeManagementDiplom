@@ -28,11 +28,13 @@
                                 <p class="text-white-50 mb-5">Вход в учетную систему</p>
 
                                 <div class="form-outline form-white mb-4">
+                                    <span asp-validation-for="Login" class="text-danger"></span>
                                     <input asp-for="Login" id="typeEmailX" class="form-control form-control-lg" />
                                     <label class="form-label" for="typeEmailX">Логин</label>
                                 </div>
 
                                 <div class="form-outline form-white mb-4">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                     <input asp-for="Password" id="typePasswordX" class="form-control form-control-lg" />
                                     <label class="form-label" for="typePasswordX">Пароль</label>
                                 </div>

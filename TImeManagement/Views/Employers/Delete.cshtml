@@ -5,54 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<h3>Вы уверены, что хотитк удалить пользователя? @Model.UserLogin</h3>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Employer</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Имя
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            Фамилия
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SurName)
+            Отчесвто
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SurName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
+            Роль
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Role.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserLogin)
+            Логин
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.UserLogin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HashPassword)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HashPassword)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a class="btn btn-primary" asp-action="Index">Назад</a>
     </form>
 </div>

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Колобок</title>
+    <script src="~/js/Calendar.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/headerTheme.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -22,13 +23,13 @@
 
 
 
-
     <link rel="stylesheet" href="~/css/Calendar.css" />
 
 
 
 </head>
 <body>
+    <partial name="_Notification" />
     <header class="p-1 mb-1 border-bottom">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -36,8 +37,18 @@
                 <a asp-controller="Home" asp-action="Start" class="d-flex mb-md-0 align-items-center mb-2 mr text-dark text-decoration-none font-size link-dark">Мой график</a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a asp-controller="Employers" asp-action="Index" class="nav-link px-2 link-dark">список сотрудников</a></li>
-                    <li><a href="#" class="nav-link px-2 link-dark">заявки</a></li>
+                    @if (User.IsInRole("1") || User.IsInRole("2"))
+                    {
+                        <li><a asp-controller="Employers" asp-action="Index" class="nav-link px-2 link-dark">список пользоваетелей</a></li>
+                    }
+                    @if (User.IsInRole("1") || User.IsInRole("2"))
+                    {
+                        <li><a asp-controller="Bids" asp-action="Index" class="nav-link px-2 link-dark">заявки</a></li>
+                    }
+                    @if (User.IsInRole("3") || User.IsInRole("4") || User.IsInRole("5") || User.IsInRole("6"))
+                    {
+                        <li><a asp-controller="Bids" asp-action="Index" class="nav-link px-2 link-dark">мои заявки</a></li>
+                    }
                 </ul>
 
                 <div class="dropdown text-end">
@@ -50,10 +61,13 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">Мой профиль @User.Identity.Name</a></li>
-                        <li><a class="dropdown-item" href="#">Мои заявки</a></li>
+                        <li><a class="dropdown-item">@User.Identity.Name</a></li>
+                        @if (User.IsInRole("3") || User.IsInRole("4") || User.IsInRole("5") || User.IsInRole("6"))
+                        {
+                        <li><a asp-controller="Bids" asp-action="Create" class="dropdown-item" onclick="register()">Cоздать заявку</a></li>
+                        }
                         <li><a class="dropdown-item" onclick="changePassword()" >Изменить пароль</a></li>
-                        @if (User.IsInRole("1"))
+                        @if (User.IsInRole("1") || User.IsInRole("2"))
                         {
                         <li><a class="dropdown-item" onclick="register()">Добавить пользователя</a></li>
                         }
@@ -76,7 +90,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Информация</h5>
+                    <h5 class="modal-title">Колобок</h5>
                     <button type="button" class="btn btn-close btn-secondary" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">

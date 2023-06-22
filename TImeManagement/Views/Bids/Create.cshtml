@@ -1,0 +1,34 @@
+﻿@model TImeManagement.ViewModels.Bids.BidsAddViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="TypeId" class="control-label">Тип заявки</label>
+                <select asp-for="TypeId" asp-items="ViewBag.BidsType"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Messange" class="control-label">Сообщение</label>
+                <textarea asp-for="Messange" class="form-control"></textarea>
+                <span asp-validation-for="Messange" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SenderLogin" class="control-label" hidden="hidden"></label>
+                <input asp-for="SenderLogin" class="form-control" value="@User.Identity.Name" hidden="hidden" />
+                <span asp-validation-for="SenderLogin" class="text-danger" hidden="hidden"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Index">Мои заявки</a>
+</div>
+

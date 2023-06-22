@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TImeManagement.Data;
 
@@ -11,9 +12,11 @@ using TImeManagement.Data;
 namespace TImeManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230621130722_AddEmployersToBids")]
+    partial class AddEmployersToBids
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +51,6 @@ namespace TImeManagement.Migrations
                     b.Property<int?>("BidTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EmployerSenderId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsClosed")
                         .HasColumnType("bit");
 
@@ -73,8 +73,6 @@ namespace TImeManagement.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BidTypeId");
-
-                    b.HasIndex("EmployerSenderId");
 
                     b.ToTable("bids");
                 });
@@ -218,13 +216,7 @@ namespace TImeManagement.Migrations
                         .WithMany()
                         .HasForeignKey("BidTypeId");
 
-                    b.HasOne("TImeManagement.Models.Employer", "EmployerSender")
-                        .WithMany()
-                        .HasForeignKey("EmployerSenderId");
-
                     b.Navigation("BidType");
-
-                    b.Navigation("EmployerSender");
                 });
 
             modelBuilder.Entity("TImeManagement.Models.Employer", b =>

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TImeManagement.Data.Repositories;
+using NLog.Web.LayoutRenderers;
 
 namespace TImeManagement.Services.Implementations
 {
@@ -168,6 +169,7 @@ namespace TImeManagement.Services.Implementations
 
             var claims = new List<Claim>()
             {
+                new Claim("UserId", employer.Id.ToString()),
                 new Claim(ClaimsIdentity.DefaultNameClaimType, employer.UserLogin),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, employer.RoleId.ToString()),///// нужно исправить
                 new Claim(claim , "1")

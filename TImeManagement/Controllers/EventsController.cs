@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,42 +20,8 @@ namespace TImeManagement.Controllers
             _context = context;
         }
 
-        // GET: Events
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.events.Include(e => e.Employer);
-            return View(await applicationDbContext.ToListAsync());
-        }
 
-        // GET: Events/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.events == null)
-            {
-                return NotFound();
-            }
-
-            var @event = await _context.events
-                .Include(e => e.Employer)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return View(@event);
-        }
-
-        // GET: Events/Create
-        public IActionResult Create()
-        {
-            ViewData["EmployerId"] = new SelectList(_context.employers, "Id", "LastName");
-            return View();
-        }
-
-        // POST: Events/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EmployerId,EventDay")] Event @event)
@@ -63,106 +30,39 @@ namespace TImeManagement.Controllers
             {
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Событие добавлено";
+                return RedirectToAction("Start", "Home");
             }
             ViewData["EmployerId"] = new SelectList(_context.employers, "Id", "LastName", @event.EmployerId);
-            return View(@event);
+            TempData["error"] = "Событие не добавлено, данные не прошли валидацию";
+            return RedirectToAction("Start","Home");
         }
 
-        // GET: Events/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpGet]
+        public JsonResult GetEvents()
         {
-            if (id == null || _context.events == null)
-            {
-                return NotFound();
-            }
-
-            var @event = await _context.events.FindAsync(id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
-            ViewData["EmployerId"] = new SelectList(_context.employers, "Id", "LastName", @event.EmployerId);
-            return View(@event);
+                var Data = _context.events
+                    .Include(e => e.Employer)
+                    .ToList();
+                return new JsonResult(Data);
         }
 
-        // POST: Events/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmployerId,EventDay")] Event @event)
+        public JsonResult DeleteEvent(int eventId)
         {
-            if (id != @event.Id)
-            {
-                return NotFound();
-            }
+            var status = false;
 
-            if (ModelState.IsValid)
-            {
-                try
+                var v = _context.events.Where(a => a.Id == eventId).FirstOrDefault();
+                if (v != null)
                 {
-                    _context.Update(@event);
-                    await _context.SaveChangesAsync();
+                    _context.events.Remove(v);
+                    _context.SaveChanges();
+                    TempData["Success"] = "Событие удалено";
+                    status = true;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventExists(@event.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EmployerId"] = new SelectList(_context.employers, "Id", "LastName", @event.EmployerId);
-            return View(@event);
-        }
-
-        // GET: Events/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.events == null)
-            {
-                return NotFound();
-            }
-
-            var @event = await _context.events
-                .Include(e => e.Employer)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return View(@event);
-        }
-
-        // POST: Events/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.events == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.events'  is null.");
-            }
-            var @event = await _context.events.FindAsync(id);
-            if (@event != null)
-            {
-                _context.events.Remove(@event);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool EventExists(int id)
-        {
-          return (_context.events?.Any(e => e.Id == id)).GetValueOrDefault();
+            return new JsonResult(status);
         }
     }
 }

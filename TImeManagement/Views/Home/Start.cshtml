@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<partial name="_Notification" />
 
 <div class="p-5">
     <div class="card">
@@ -24,56 +23,37 @@
                 <div class="event-body"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                @if (User.IsInRole("2") || User.IsInRole("1"))
+                {
+                    <button id="btnDeleteEvent" type="button" class="btn btn-danger pull-left">Удалить</button>
+                }
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>
 </div>
-
-<div id="modal-view-event-add" class="modal modal-top fade calendar-modal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form id="add-event">
-                <div class="modal-body">
-                    <h4>Add Event Detail</h4>
+ 
+@if (User.IsInRole("2") || User.IsInRole("1"))
+{
+    <div id="modal-view-event-add" class="modal modal-top fade calendar-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post">
                     <div class="form-group">
-                        <label>Event name</label>
-                        <input type="text" class="form-control" name="ename">
+                        <label asp-for="EmployerId" class="control-label">Сотрудник</label>
+                        <select asp-for="EmployerId" class="form-control" asp-items="ViewBag.EmployerId"></select>
                     </div>
                     <div class="form-group">
-                        <label>Event Date</label>
-                        <input type='text' class="datetimepicker form-control" name="edate">
+                        <label asp-for="EventDay" class="control-label">День</label>
+                        <input asp-for="EventDay" class="form-control" />
+                        <span asp-validation-for="EventDay" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>Event Description</label>
-                        <textarea class="form-control" name="edesc"></textarea>
+                        <input type="submit" value="Создать" asp-controller="Events" asp-action="Create" class="btn btn-primary"/>
+                        <button type="button" class="btn btn-primary pull-right" data-bs-dismiss="modal">Закрыть</button>
                     </div>
-                    <div class="form-group">
-                        <label>Event Color</label>
-                        <select class="form-control" name="ecolor">
-                            <option value="fc-bg-default">fc-bg-default</option>
-                            <option value="fc-bg-blue">fc-bg-blue</option>
-                            <option value="fc-bg-lightgreen">fc-bg-lightgreen</option>
-                            <option value="fc-bg-pinkred">fc-bg-pinkred</option>
-                            <option value="fc-bg-deepskyblue">fc-bg-deepskyblue</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Event Icon</label>
-                        <select class="form-control" name="eicon">
-                            <option value="circle">circle</option>
-                            <option value="cog">cog</option>
-                            <option value="group">group</option>
-                            <option value="suitcase">suitcase</option>
-                            <option value="calendar">calendar</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+}

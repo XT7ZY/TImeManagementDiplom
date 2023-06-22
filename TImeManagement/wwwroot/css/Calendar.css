@@ -934,6 +934,7 @@ NOTE: use percentage font sizes or else old IE chokes
 
 .fc-bootstrap4 .fc-today.alert {
     border-radius: 0;
+    
 }
 
 .fc-bootstrap4 a.fc-event:not([href]):not([tabindex]) {

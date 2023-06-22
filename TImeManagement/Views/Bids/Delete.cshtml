@@ -1,0 +1,52 @@
+﻿@model TImeManagement.Models.Bid
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h3>Вы действительно хотите удалить заявку?</h3>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Тип
+        </dt>
+        <dd class="col-sm-10">
+            @Model.BidType.Name
+        </dd>
+        <dt class="col-sm-2">
+            Сообщение
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class="col-sm-2">
+            Статус
+        </dt>
+        @if (Model.IsClosed == false)
+        {
+            <dd class="text-warning col-sm-10">
+                В обработке
+            </dd>
+        }
+        @if (Model.IsClosed == true)
+        {
+            <dd class="text-success col-sm-10">
+                Обработана
+            </dd>
+        }
+        <dt class="col-sm-2">
+            Время отправки
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SendTime)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a class="btn btn-primary" asp-action="Index">Назад к списку</a>
+    </form>
+</div>

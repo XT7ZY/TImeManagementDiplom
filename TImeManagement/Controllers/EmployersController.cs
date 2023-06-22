@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,57 +20,15 @@ namespace TImeManagement.Controllers
             _context = context;
         }
 
-        // GET: Employers
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.employers.Include(e => e.Role);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Employers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.employers == null)
-            {
-                return NotFound();
-            }
 
-            var employer = await _context.employers
-                .Include(e => e.Role)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employer == null)
-            {
-                return NotFound();
-            }
-
-            return View(employer);
-        }
-
-        // GET: Employers/Create
-        public IActionResult Create()
-        {
-            ViewData["RoleId"] = new SelectList(_context.roles, "Id", "Id");
-            return View();
-        }
-
-        // POST: Employers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,LastName,SurName,RoleId,UserLogin,HashPassword")] Employer employer)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(employer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["RoleId"] = new SelectList(_context.roles, "Id", "Id", employer.RoleId);
-            return View(employer);
-        }
-
-        // GET: Employers/Edit/5
+        [Authorize(Policy = "AdminOnly")] 
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.employers == null)
@@ -82,13 +41,11 @@ namespace TImeManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.roles, "Id", "Id", employer.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.roles, "Id", "Name", employer.RoleId);
             return View(employer);
         }
 
-        // POST: Employers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastName,SurName,RoleId,UserLogin,HashPassword")] Employer employer)
@@ -104,6 +61,7 @@ namespace TImeManagement.Controllers
                 {
                     _context.Update(employer);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Данные успешно изменены";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,7 +80,8 @@ namespace TImeManagement.Controllers
             return View(employer);
         }
 
-        // GET: Employers/Delete/5
+
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.employers == null)
@@ -141,7 +100,8 @@ namespace TImeManagement.Controllers
             return View(employer);
         }
 
-        // POST: Employers/Delete/5
+
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -157,6 +117,7 @@ namespace TImeManagement.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Пользователь удален";
             return RedirectToAction(nameof(Index));
         }
 

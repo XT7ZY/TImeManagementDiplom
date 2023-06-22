@@ -5,53 +5,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Employer</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Имя</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="control-label">Фамилия</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SurName" class="control-label"></label>
+                <label asp-for="SurName" class="control-label">Отчество</label>
                 <input asp-for="SurName" class="form-control" />
                 <span asp-validation-for="SurName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RoleId" class="control-label"></label>
+                <label asp-for="RoleId" class="control-label">Роль</label>
                 <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
                 <span asp-validation-for="RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserLogin" class="control-label"></label>
+                <label asp-for="HashPassword" class="control-label" hidden="hidden">Пароль</label>
+                <input asp-for="HashPassword" class="form-control" hidden="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserLogin" class="control-label">Логин</label>
                 <input asp-for="UserLogin" class="form-control" />
                 <span asp-validation-for="UserLogin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="HashPassword" class="control-label"></label>
-                <input asp-for="HashPassword" class="form-control" />
-                <span asp-validation-for="HashPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Назад</a>
 </div>
 
